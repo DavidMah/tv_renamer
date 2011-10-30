@@ -2,10 +2,6 @@ require 'nokogiri'
 require 'open-uri'
 
 class WikiScraper
-  def initialize
-
-  end
-
   def retrieve_titles(url)
     destination = "titles of #{url.split(/\//).last}.txt"
     data = extract_titles(url)
