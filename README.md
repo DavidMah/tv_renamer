@@ -5,7 +5,7 @@ wikipedia.
 
 ## Dependencies
 
-Mechanize (http://mechanize.rubyforge.org/)
+Nokogiri (http://nokogiri.org/)
 
 ## Author
 
