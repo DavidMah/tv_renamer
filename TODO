@@ -1,0 +1,10 @@
+Interfaces
+  Graphical User Interface through GTK
+  Command   Line Interface
+
+API
+  Retrieve File Names of Directory
+
+File Handling
+  Writing Scrape Output to files
+  Using pre prepared rename files
