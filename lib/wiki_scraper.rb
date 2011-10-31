@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 
+WIKI = "http://www.wikipedia.org"
 class WikiScraper
   def retrieve_titles(url)
     destination = "titles of #{url.split(/\//).last}.txt"
