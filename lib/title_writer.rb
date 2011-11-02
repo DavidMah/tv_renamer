@@ -15,13 +15,17 @@ class TitleWriter
     directory ||= "."
     data        = options[:data]
 
-    log = File.new("log.txt", "w")
+    begin
+      log = File.new("log.txt", "w")
 
-    data.each do |name_element|
-      names = name_element.map{|e| File.join(directory, e)}
-      log.syswrite "#{name_element.join(" : ")}\n"
-      File.rename(*names)
+      data.each do |name_element|
+        names = name_element.map{|e| File.join(directory, e)}
+        log.syswrite "#{name_element.join(" : ")}\n"
+        File.rename(*names)
+      end
+    rescue
+      {:status => "failure: #{$!}"}
     end
-
+      {:status => "success"}
   end
 end
