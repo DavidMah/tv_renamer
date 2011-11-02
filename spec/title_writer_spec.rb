@@ -11,7 +11,7 @@ describe TitleWriter do
 
     it "should set up a log file correctly" do
       File.should_receive(:new).once.with("log.txt", "w").and_return(@mock_log)
-      @title_writer.write_names({"data" => []})
+      @title_writer.write_names({:data => []})
     end
 
     it "should handle elements without a target directory correctly" do
@@ -21,7 +21,7 @@ describe TitleWriter do
       @mock_log.should_receive(:syswrite).once.with(%Q[a : b\n]).and_return(true)
       @mock_log.should_receive(:syswrite).once.with(%Q[c : d\n]).and_return(true)
 
-      @title_writer.write_names({"data" => [["a", "b"], ["c", "d"]]})
+      @title_writer.write_names({:data => [["a", "b"], ["c", "d"]]})
     end
 
     it "should handle elements with a target directory correctly" do
@@ -31,7 +31,7 @@ describe TitleWriter do
       @mock_log.should_receive(:syswrite).once.with(%Q[a : b\n]).and_return(true)
       @mock_log.should_receive(:syswrite).once.with(%Q[c : d\n]).and_return(true)
 
-      @title_writer.write_names({"data" => [["a", "b"], ["c", "d"]], "directory" => "/home/garpley"})
+      @title_writer.write_names({:data => [["a", "b"], ["c", "d"]], :directory => "/home/garpley"})
     end
   end
 

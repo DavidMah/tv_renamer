@@ -5,6 +5,10 @@ class TitleWriter
     Dir.entries(directory)
   end
 
+  def pair_names_and_titles(names, titles)
+    names.zip(titles)
+  end
+
   # Data is a list of pairs of filename to targetname
   def write_names(options = {})
     directory = options[:directory]

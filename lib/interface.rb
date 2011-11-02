@@ -32,7 +32,7 @@ class Interface
     end
   end
 
-  # Mandatory: include a "titles" key that points to a hash of original filenames to targets
+  # Mandatory: include a "titles" key that points to a list of pairs of original_names with target_names
   # Optional:  include a "directory" key that points to the directory that contains other given filenames
   def rename(message)
     data = message["titles"]
