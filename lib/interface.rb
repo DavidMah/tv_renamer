@@ -47,4 +47,10 @@ class Interface
     url = message["target"]
     @wiki_scraper.retrieve_titles(url)
   end
+
+  # Mandatory: include a "target" key that is the target pathname of the directory to retrieve names with
+  def retrieve_names(message)
+    target = message["target"]
+    @title_writer.retrieve_current_names(target)
+  end
 end

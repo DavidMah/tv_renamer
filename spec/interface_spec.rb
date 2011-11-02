@@ -35,4 +35,11 @@ describe Interface do
       @interface.scrape({"target" => "garpley"})
     end
   end
+
+  describe "#current_names" do
+    it "should send the directory in" do
+      @title_writer_mock.should_receive(:retrieve_current_names).once.with("/garpley/bargenly")
+      @interface.retrieve_names({"target" => "/garpley/bargenly"})
+    end
+  end
 end
