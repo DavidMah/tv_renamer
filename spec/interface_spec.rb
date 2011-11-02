@@ -19,13 +19,13 @@ describe Interface do
 
   describe "#rename" do
     it "should pass the titles without the not existing directory" do
-      @title_writer_mock.should_receive(:write_names).once.with({:data => [["a", "b"], ["c", "d"]]})
-      @interface.rename({"titles" => [["a", "b"], ["c", "d"]]})
+      @title_writer_mock.should_receive(:write_names).once.with({:data => [["1", "3"], ["2", "4"]]})
+      @interface.rename({"titles" => [["1", "2"], ["3", "4"]]})
     end
 
     it "should pass the titles with the existing directory" do
-      @title_writer_mock.should_receive(:write_names).once.with({:data => [["a", "b"], ["c", "d"]], :directory => "garpley"})
-      @interface.rename({"titles" => [["a", "b"], ["c", "d"]], "directory" => "garpley"})
+      @title_writer_mock.should_receive(:write_names).once.with({:data => [["1", "3"], ["2", "4"]], :directory => "garpley"})
+      @interface.rename({"titles" => [["1", "2"], ["3", "4"]], "directory" => "garpley"})
     end
   end
 
