@@ -40,6 +40,7 @@ class Interface
     directory = message["directory"]
     options   = {:data => data}
     options[:directory] = directory if directory
+
     @title_writer.write_names(options)
   end
 
