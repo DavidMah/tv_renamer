@@ -5,16 +5,11 @@ class CommandLineInterface
     @interface = Interface.new
   end
 
-  def scrape(url)
-    options = {'operation' => 'scrape', 'target' => url}
-    result = @interface.receive_message(options.to_json)
-    pretty_print result
+  def scrape(url, logfile = nil)
+    options = {'operation' => 'scrape',
+               'target'    => url,
+               'logfile'   => logfile}
+    @interface.receive_message(options.to_json)
   end
 
-
-  def pretty_print(titles)
-    titles.each do |t|
-      puts t.join(" - ")
-    end
-  end
 end

@@ -12,9 +12,13 @@ optparse = OptionParser.new do |opts|
     exit
   end
 
-  opts.on('-s', '--scrape', 'Scrape') do
-    interface.scrape(ARGV[0])
+  opts.on('-l', '--log FILE', 'log output to FILE') do |file|
+    options[:logfile] = file
   end
 end
 
 optparse.parse!
+
+command   = ARGV.shift
+arguments = ARGV
+interface.send(command, *arguments)

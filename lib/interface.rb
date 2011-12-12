@@ -45,9 +45,11 @@ class Interface
   end
 
   # Mandatory: include a "target" key that is the url of the wikipedia entry
+  # Optional : include a "logfile" key that says where to write the output
   def scrape(message)
-    url = message["target"]
-    @wiki_scraper.retrieve_titles(url)
+    url     = message["target"]
+    logfile = message["logfile"]
+    @wiki_scraper.retrieve_titles(url, logfile)
   end
 
   # Mandatory: include a "target" key that is the target pathname of the directory to retrieve names with
