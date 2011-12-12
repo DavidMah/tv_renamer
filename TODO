@@ -1,9 +1,0 @@
-Interfaces
-  Graphical User Interface through GTK
-  Command   Line Interface
-
-API
-
-File Handling
-  Writing Scrape Output to files
-  Using pre prepared rename files
