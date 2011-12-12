@@ -44,7 +44,7 @@ class Interface
     @title_writer.write_names(options)
   end
 
-  # Mandatory: include a "target" key that is the end pathname of the url for the wikipedia entry
+  # Mandatory: include a "target" key that is the url of the wikipedia entry
   def scrape(message)
     url = message["target"]
     @wiki_scraper.retrieve_titles(url)

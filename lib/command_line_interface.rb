@@ -1,27 +1,20 @@
+require 'interface'
+
 class CommandLineInterface
   def initialize
-    loop {
-      puts "[S]crape, [R]ename, [E]xit"
-      choice = gets[0].upcase
-      case choice
-      when "S"; puts "Scraping"
-      when "R"; puts "Renaming"
-      when "E"; exit
-      else
-        puts "Nothing"
-      end
-    }
+    @interface = Interface.new
   end
 
-  def scrape
-    puts "What Wikipedia URL would you like to scrape?"
-    url = gets.chomp
-    puts "What is the full path of your log file target?"
-    target = gets.chomp
-    puts "scraping..."
+  def scrape(url)
+    options = {'operation' => 'scrape', 'target' => url}
+    result = @interface.receive_message(options.to_json)
+    pretty_print result
   end
 
-  def rename
 
+  def pretty_print(titles)
+    titles.each do |t|
+      puts t.join(" - ")
+    end
   end
 end
