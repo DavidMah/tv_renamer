@@ -3,8 +3,7 @@ require 'open-uri'
 
 WIKI = "http://www.wikipedia.org"
 class WikiScraper
-  def retrieve_titles(url)
-    destination = "titles of #{url.split(/\//).last}.txt"
+  def retrieve_titles(url, destination = nil)
     data = extract_titles(url)
     write_titles(data, destination)
   end
@@ -24,6 +23,7 @@ class WikiScraper
   end
 
   def write_titles(data, destination)
+    return if destination.nil?
     output = File.new(destination, "w")
     data.each do |episode|
       output.syswrite "#{episode.join(" - ")}\n"
