@@ -1,5 +1,5 @@
 require 'rspec'
-load File.join(File.dirname(__FILE__), "..", "lib", "title_writer.rb")
+require 'title_writer'
 
 describe TitleWriter do
   before :each do

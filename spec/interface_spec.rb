@@ -1,6 +1,4 @@
-require 'rspec'
-load File.join(File.dirname(__FILE__), "..", "lib", "interface.rb")
-
+require 'interface'
 describe Interface do
   before :each do
     @wiki_scraper_mock = mock('wiki_scraper')
@@ -31,7 +29,7 @@ describe Interface do
 
   describe "#scrape" do
     it "should send the url in" do
-      @wiki_scraper_mock.should_receive(:retrieve_titles).once.with("garpley")
+      @wiki_scraper_mock.should_receive(:retrieve_titles).once.with("garpley", nil)
       @interface.scrape({"target" => "garpley"})
     end
   end
