@@ -1,6 +1,16 @@
 require 'json'
 class TitleWriter
 
+  def rename(*arguments)
+    write_names(*arguments)
+  end
+
+  def describe(*arguments)
+    describe_names(*arguments)
+  end
+
+
+
   def retrieve_current_names(directory)
     Dir.entries(directory)
   end
