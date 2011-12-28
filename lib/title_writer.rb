@@ -1,6 +1,16 @@
 require 'json'
 class TitleWriter
 
+  def rename(*arguments)
+    write_names(*arguments)
+  end
+
+  def describe(*arguments)
+    describe_names(*arguments)
+  end
+
+
+
   def retrieve_current_names(directory)
     Dir.entries(directory)
   end
@@ -10,23 +20,44 @@ class TitleWriter
   end
 
   # Data is a list of pairs of filename to targetname
-  def write_names(options = {})
-    directory   = options[:directory]
-    directory ||= "."
-    data        = options[:data]
+  #   Will be explicitly passed in if this call to tv_renamer also did scraping
+  #   Otherwise, input will be the name of the file that include renaming data in the same structure(but in json)
+  # log can be link -- make a directory of links
+  def write_names(options = {}, data = nil)
+    data        = extract_data(options['input']) if data.nil?
+    log         = options['log']    || 'link'
+    output_name = options['output'] || 'title_backup'
 
-    begin
-      log = File.new("log.txt", "w")
-
-      data.each do |name_element|
-        names = name_element.map{|e| File.join(directory, e)}
-        log.syswrite "#{name_element.join(" : ")}\n"
-        File.rename(*names)
+    if log == 'link'
+      backup_dir = find_filename(output_name)
+      Dir.mkdir(backup_dir)
+      data.each do |from, to|
+        File.symlink(from, File.join(backup_dir, to))
       end
-    rescue
-      {:status => "failure: #{$!}"}
+    elsif log == 'file' or link != "none"
+      backup_file = find_filename(output_name)
+      output = File.open(backup_file, 'w')
+      output.print(data.to_json)
+    elsif log == "none"
+      puts "excluding backup"
     end
-      {:status => "success"}
+
+    data.each do |from, to|
+      File.rename(from, to)
+    end
+  end
+
+  def extract_data(input)
+    JSON.parse(File.read(input))
+  end
+
+  def find_filename(name)
+    return name if not File.exists?(name)
+    count = 1
+    until not File.exists?("#{name}#{count}")
+      count += 1
+    end
+    "#{name}#{count}"
   end
 
   # Create a title for every title/no using embedded symbols
@@ -34,7 +65,7 @@ class TitleWriter
   # #{main_title} - Title of the TV Show
   # #{ep_title}   - Title of the Episode
   # #{ep_num}     - Number of the Episode
-  def describe_names(titles, script, main_title)
+  def describe_names(main_title, titles, script)
 
     new_titles = Array.new(titles.size){ script }
     new_titles.map! { |t| t.gsub(/\#{main_title}/, main_title) }
