@@ -15,10 +15,28 @@ optparse = OptionParser.new do |opts|
   opts.on('-l', '--log FILE', 'log output to FILE') do |file|
     options[:logfile] = file
   end
+
+  opts.on('--trace', 'Print stack trace to standard output') do
+    options['trace'] = true
+  end
 end
 
-optparse.parse!
+begin
+  optparse.parse!
+  help_message if ARGV.empty?
 
-command   = ARGV.shift
-arguments = ARGV
-interface.send(command, *arguments)
+  # parse command out from the arguments
+  command   = ARGV.shift
+  arguments = ARGV << options
+
+  interface = TvInterface.new
+  interface.run(command, arguments)
+rescue => ex
+  if options['trace']
+    puts "#{ex.inspect}"
+  else
+    puts "There was an error! Add the --trace switch for the stack trace"
+  end
+  puts opts_banner
+  exit
+end

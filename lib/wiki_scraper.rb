@@ -3,6 +3,11 @@ require 'open-uri'
 
 WIKI = "http://www.wikipedia.org"
 class WikiScraper
+
+  def scrape(*arguments)
+    retrieve_titles(*arguments)
+  end
+
   def retrieve_titles(url, logfile = nil)
     data = extract_titles(url)
     write_titles(data, logfile)
