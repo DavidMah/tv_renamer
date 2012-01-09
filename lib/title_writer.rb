@@ -22,22 +22,23 @@ class TitleWriter
   # Data is a list of pairs of filename to targetname
   # log can be link -- make a directory of links
   def write_names(options = {})
-    data      = options[:data]
-    directory = options[:directory] || "."
-    log       = options[:log] || 'link'
+    data        = options['data']
+    directory   = options['directory'] || "."
+    log         = options['log']    || 'link'
+    output_name = options['output'] || 'title_backup'
 
     if log == 'link'
-      backup_dir = find_filename('title_backup')
+      backup_dir = find_filename(output_name)
       Dir.mkdir(backup_dir)
       data.each do |from, to|
-        File.symlink(from, File.join(backup_dir, from))
+        File.symlink(from, File.join(backup_dir, to))
       end
-    elsif log == 'file'
-      backup_file = find_filename('title_backup')
+    elsif log == 'file' or link != "none"
+      backup_file = find_filename(output_name)
       output = File.open(backup_file, 'w')
-      data.each do |from, to|
-        output.print "#{from}  =>  #{to}\n"
-      end
+      output.print(data.to_json)
+    elsif log == "none"
+      puts "excluding backup"
     end
 
     data.each do |from, to|
