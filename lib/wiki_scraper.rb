@@ -22,7 +22,7 @@ class WikiScraper
         columns = episode.children
         id      = columns.first.content
         title   = episode.css('.summary').first.content
-        [id, title]
+        title
       rescue
         []
       end

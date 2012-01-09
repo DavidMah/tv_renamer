@@ -9,7 +9,20 @@ optparse = OptionParser.new do |opts|
 
   opts.on('-h', '--help', 'Display This Screen') do
     puts opts.banner
+    puts "commands:"
+    puts "  scrape   -- Retrieve title names from Wikipedia"
+    puts "  describe -- Build write file from scrape output"
+    puts "  write    -- Rename files in a directory"
+    puts "  rename   -- Combines the three tasks"
     exit
+  end
+
+  opts.on('-i', '--input FILE', 'write file input') do |file|
+    options['input'] = file
+  end
+
+  opts.on('-l', '--log TYPE', 'backup output for write') do |type|
+    options['log'] = type
   end
 
   opts.on('-o', '--output FILE', 'output to FILE') do |file|
