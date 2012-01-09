@@ -11,11 +11,11 @@ class WikiScraper
   end
 
   def retrieve_titles(url, options = {})
-    data = extract_titles(url)
+    data = extract_titles(url, options)
     write_titles(data, options)
   end
 
-  def extract_titles(url)
+  def extract_titles(url, options = {})
     document = Nokogiri::HTML(open(url))
     document.css('.vevent').map do |episode|
       begin

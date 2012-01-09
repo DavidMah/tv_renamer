@@ -20,23 +20,38 @@ class TitleWriter
   end
 
   # Data is a list of pairs of filename to targetname
+  # log can be link -- make a directory of links
   def write_names(options = {})
-    directory   = options[:directory]
-    directory ||= "."
-    data        = options[:data]
+    data      = options[:data]
+    directory = options[:directory] || "."
+    log       = options[:log] || 'link'
 
-    begin
-      log = File.new("log.txt", "w")
-
-      data.each do |name_element|
-        names = name_element.map{|e| File.join(directory, e)}
-        log.syswrite "#{name_element.join(" : ")}\n"
-        File.rename(*names)
+    if log == 'link'
+      backup_dir = find_filename('title_backup')
+      Dir.mkdir(backup_dir)
+      data.each do |from, to|
+        File.symlink(from, File.join(backup_dir, from))
       end
-    rescue
-      {:status => "failure: #{$!}"}
+    elsif log == 'file'
+      backup_file = find_filename('title_backup')
+      output = File.open(backup_file, 'w')
+      data.each do |from, to|
+        output.print "#{from}  =>  #{to}\n"
+      end
     end
-      {:status => "success"}
+
+    data.each do |from, to|
+      File.rename(from, to)
+    end
+  end
+
+  def find_filename(name)
+    return name if not File.exists?(name)
+    count = 1
+    until not File.exists?("#{name}#{count}")
+      count += 1
+    end
+    "#{name}#{count}"
   end
 
   # Create a title for every title/no using embedded symbols
@@ -44,7 +59,7 @@ class TitleWriter
   # #{main_title} - Title of the TV Show
   # #{ep_title}   - Title of the Episode
   # #{ep_num}     - Number of the Episode
-  def describe_names(titles, script, main_title)
+  def describe_names(main_title, titles, script)
 
     new_titles = Array.new(titles.size){ script }
     new_titles.map! { |t| t.gsub(/\#{main_title}/, main_title) }
