@@ -47,6 +47,7 @@ class TitleWriter
     end
   end
 
+  # Extracts JSON data from input file
   def extract_data(input)
     JSON.parse(File.read(input))
   end
@@ -58,6 +59,13 @@ class TitleWriter
       count += 1
     end
     "#{name}#{count}"
+  end
+
+  def describe(options = {}, titles = nil)
+    main_title = options['main_title']
+    script     = options['script']
+    titles     = extract_data(options['input']) if titles.nil?
+    describe_names(main_title, titles, script)
   end
 
   # Create a title for every title/no using embedded symbols
