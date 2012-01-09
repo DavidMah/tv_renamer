@@ -1,5 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
+require 'json'
+require 'yaml'
 
 WIKI = "http://www.wikipedia.org"
 class WikiScraper
@@ -8,10 +10,9 @@ class WikiScraper
     retrieve_titles(*arguments)
   end
 
-  def retrieve_titles(url, logfile = nil)
+  def retrieve_titles(url, options = {})
     data = extract_titles(url)
-    write_titles(data, logfile)
-    data
+    write_titles(data, options)
   end
 
   def extract_titles(url)
@@ -28,15 +29,12 @@ class WikiScraper
     end
   end
 
-  def write_titles(data, destination)
-    output = File.new(destination, "w") if destination
-    data.each do |episode|
-      formatted_episode = "#{episode.join(" - ")}\n"
-      if destination.nil?
-        print formatted_episode
-      else
-        output.syswrite formatted_episode
-      end
-    end
+  def write_titles(data, options = {})
+    destination = options['output']
+    format      = options['format'] || 'json'
+
+    output = (destination ? File.new(destination, "w") : $stdout)
+    formatted_data = data.send("to_#{format}")
+    output.print(formatted_data)
   end
 end

@@ -12,8 +12,12 @@ optparse = OptionParser.new do |opts|
     exit
   end
 
-  opts.on('-l', '--log FILE', 'log output to FILE') do |file|
-    options[:logfile] = file
+  opts.on('-o', '--output FILE', 'output to FILE') do |file|
+    options['output'] = file
+  end
+
+  opts.on('-f', '--format [json|yaml]', 'data format for any output') do |format|
+    options['format'] = format
   end
 
   opts.on('--trace', 'Print stack trace to standard output') do
