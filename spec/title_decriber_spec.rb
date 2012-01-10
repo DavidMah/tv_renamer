@@ -4,6 +4,7 @@ describe TitleDescriber do
   before :each do 
     @title_describer = TitleDescriber.new
   end
+
   describe "describe_names" do
     it "should leave these unembeddy strings alone" do
       @title_describer.describe_names('miku', ['a', 'b', 'c'], 'garpley').should == ['garpley', 'garpley', 'garpley']
@@ -29,6 +30,16 @@ describe TitleDescriber do
     it "should work with a combination of these substitutions" do
       result = @title_describer.describe_names('Adventure Time', ['a', 'b', 'c'], '#{main_title} - #{ep_num} - #{ep_title}.mkv')
       result.should == ['Adventure Time - 1 - a.mkv', 'Adventure Time - 2 - b.mkv', 'Adventure Time - 3 - c.mkv']
+    end
+  end
+
+  describe "#write_name_file" do
+    it "should zip that data and write to a file" do
+      @title_describer.should_receive(:retrieve_tv_files).and_return(['a', 'b', 'c'])
+      @title_describer.should_receive(:find_filename).and_return('name_file')
+      names = ['i', 'j', 'k']
+      File.should_receive(:write).once.with("name_file", '[["a","i"],["b","j"],["c","k"]]').and_return(true)
+      @title_describer.write_name_file(names)
     end
   end
 end

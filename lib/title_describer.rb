@@ -35,10 +35,15 @@ class TitleDescriber
 
   def write_name_file(names, options = {})
     output_name = options['output'] || 'name_file'
-    files = Dir.entries('.')
+    directory   = options['input']  || "."
+    files = retrieve_tv_files(directory)
     data  = files.zip(names).to_json
 
     name_file = find_filename(output_name)
-    File.write(name_file, output)
+    File.write(name_file, data)
+  end
+
+  def retrieve_tv_files(directory)
+    Dir.entries(directory)
   end
 end
