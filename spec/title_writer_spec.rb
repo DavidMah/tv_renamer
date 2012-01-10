@@ -28,8 +28,7 @@ describe TitleWriter do
 
     it "should produce a backup logfile and document the renames" do
       @options['log'] = 'file'
-      File.should_receive(:open).once.with('title_backup', 'w').and_return(@mock_file)
-      @mock_file.should_receive(:print).once.with('[["from1","to1"],["from2","to2"]]')
+      File.should_receive(:write).once.with('title_backup', '[["from1","to1"],["from2","to2"]]').and_return(true)
       @data.each do |f, t|
         File.should_receive(:rename).once.with(f, t).and_return(true)
       end

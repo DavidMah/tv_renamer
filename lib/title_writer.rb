@@ -1,5 +1,8 @@
 require 'json'
+require 'data_operations'
+
 class TitleWriter
+  include DataOperations
 
   def rename(*arguments)
     write_names(*arguments)
@@ -26,8 +29,7 @@ class TitleWriter
       end
     elsif log == 'file' or link != "none"
       backup_file = find_filename(output_name)
-      output = File.open(backup_file, 'w')
-      output.print(data.to_json)
+      File.write(backup_file, data.to_json)
     elsif log == "none"
       puts "excluding backup"
     end
@@ -37,17 +39,4 @@ class TitleWriter
     end
   end
 
-  # Extracts JSON data from input file
-  def extract_data(input)
-    JSON.parse(File.read(input))
-  end
-
-  def find_filename(name)
-    return name if not File.exists?(name)
-    count = 1
-    until not File.exists?("#{name}#{count}")
-      count += 1
-    end
-    "#{name}#{count}"
-  end
 end

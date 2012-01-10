@@ -1,11 +1,15 @@
 require 'json'
+require 'data_operations'
+
 class TitleDescriber
+  include DataOperations
 
   def describe(options = {}, titles = nil)
     main_title = options['main_title']
     script     = options['script']
     titles     = extract_data(options['input']) if titles.nil?
-    describe_names(main_title, titles, script)
+    names = describe_names(main_title, titles, script)
+    write_name_file(names)
   end
 
   # Create a title for every title/no using embedded symbols
@@ -29,8 +33,12 @@ class TitleDescriber
     names.zip(titles)
   end
 
-  # Extracts JSON data from input file
-  def extract_data(input)
-    JSON.parse(File.read(input))
+  def write_name_file(names, options = {})
+    output_name = options['output'] || 'name_file'
+    files = Dir.entries('.')
+    data  = files.zip(names).to_json
+
+    name_file = find_filename(output_name)
+    File.write(name_file, output)
   end
 end

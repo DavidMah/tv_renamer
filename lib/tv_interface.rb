@@ -9,6 +9,6 @@ class TvInterface
   end
 
   def run(command, arguments)
-    @tools.send(command, *arguments)
+    @tools[command].send(command, *arguments)
   end
 end
