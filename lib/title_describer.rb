@@ -1,12 +1,12 @@
 require 'json'
-require 'data_operations'
+require 'data_operations.rb'
 
 class TitleDescriber
   include DataOperations
 
   def describe(options = {}, titles = nil)
-    main_title = options['main_title']
-    script     = options['script']
+    main_title = options['main_title'] || File.basename(Dir.getwd)
+    script     = options['script']     || '#{main_title} - #{ep_num} - #{ep_title}'
     titles     = extract_data(options['input']) if titles.nil?
     names = describe_names(main_title, titles, script)
     write_name_file(names)

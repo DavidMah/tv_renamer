@@ -5,13 +5,13 @@ interface = CommandLineInterface.new
 options = {}
 
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: tv_renamer <command> options"
+  opts.banner = "Usage: tv_renamer <command> <arguments> options"
 
   opts.on('-h', '--help', 'Display This Screen') do
     puts opts.banner
     puts "commands:"
     puts "  scrape   -- Retrieve title names from Wikipedia"
-    puts "  describe -- Build write file from scrape output"
+    puts "  describe \"<script>\" -- Build write file from scrape output"
     puts "  write    -- Rename files in a directory"
     puts "  rename   -- Combines the three tasks"
     exit

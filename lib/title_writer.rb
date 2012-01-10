@@ -18,6 +18,7 @@ class TitleWriter
   # log can be link -- make a directory of links
   def write_names(options = {}, data = nil)
     data        = extract_data(options['input']) if data.nil?
+    data        = preserve_extensions(data)
     log         = options['log']    || 'link'
     output_name = options['output'] || 'title_backup'
 
