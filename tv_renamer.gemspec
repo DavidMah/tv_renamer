@@ -10,5 +10,6 @@ Gem::Specification.new do |s|
   s.files       = ['lib/tv_renamer.rb',
                    'lib/tv_interface.rb',
                    'lib/title_writer.rb',
+                   'lib/title_describer.rb',
                    'lib/wiki_scraper.rb']
 end
