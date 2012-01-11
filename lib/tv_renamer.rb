@@ -1,26 +1,29 @@
-require 'command_line_interface'
+require 'tv_interface'
 require 'optparse'
 
-interface = CommandLineInterface.new
+interface = TvInterface.new
 options = {}
 
+opts_banner = ""
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: tv_renamer <command> <arguments> options"
+  opts_banner = opts.banner
 
   opts.on('-h', '--help', 'Display This Screen') do
     puts opts.banner
     puts "commands:"
-    puts "  scrape   -- Retrieve title names from Wikipedia"
-    puts "  describe \"<script>\" -- Build write file from scrape output"
+    puts "  scrape   \"<url>\"-- Retrieve title names from Wikipedia"
+    puts "  describe \"scrape_filename\"-- Build write file from scrape output"
     puts "  write    -- Rename files in a directory"
     puts "  rename   -- Combines the three tasks"
     exit
   end
 
-  opts.on('-i', '--input FILE', 'write file input') do |file|
+  opts.on('-i', '--input FILE', 'file input for command') do |file|
     options['input'] = file
   end
 
+  # Log Types: [link|file|none]
   opts.on('-l', '--log TYPE', 'backup output for write') do |type|
     options['log'] = type
   end
@@ -31,6 +34,10 @@ optparse = OptionParser.new do |opts|
 
   opts.on('-f', '--format [json|yaml]', 'data format for any output') do |format|
     options['format'] = format
+  end
+
+  opts.on('--main_title SHOW_TITLE', 'name of show title for descriptions') do |title|
+    options['main_title'] = title
   end
 
   opts.on('--trace', 'Print stack trace to standard output') do
@@ -44,13 +51,14 @@ begin
 
   # parse command out from the arguments
   command   = ARGV.shift
-  arguments = ARGV << options
+  options['arguments'] = ARGV
 
   interface = TvInterface.new
-  interface.run(command, arguments)
+  interface.run(command, options)
 rescue => ex
   if options['trace']
     puts "#{ex.inspect}"
+    puts "#{ex.backtrace}"
   else
     puts "There was an error! Add the --trace switch for the stack trace"
   end

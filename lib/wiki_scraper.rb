@@ -10,7 +10,8 @@ class WikiScraper
     retrieve_titles(*arguments)
   end
 
-  def retrieve_titles(url, options = {})
+  def retrieve_titles(options = {})
+    url = options['arguments'].first
     data = extract_titles(url, options)
     write_titles(data, options)
   end
@@ -22,7 +23,7 @@ class WikiScraper
         columns = episode.children
         id      = columns.first.content
         title   = episode.css('.summary').first.content
-        title
+        title.gsub("\"", "")
       rescue
         []
       end
@@ -35,6 +36,11 @@ class WikiScraper
 
     output = (destination ? File.new(destination, "w") : $stdout)
     formatted_data = data.send("to_#{format}")
-    output.print(formatted_data)
+    if not data.empty?
+      output.print(formatted_data)
+    else
+      output.print("Couldn't Find Any episodes -- page is formatted differently")
+    end
+    output.print("\n")
   end
 end
